@@ -101,7 +101,7 @@ const Transaction = () => {
           onChange={setRecipientPublicKey}
         />
         <Text
-          className="sm:h-16 sm:text-2xl"
+          className="md:text-2xl lg:text-3xl"
           label="Amount"
           placeholder={"0 SOL"}
           value={amount}
