@@ -22,7 +22,6 @@ const SolflareWalletProvider = ({ children }) => {
         return window.solflare;
       }
     }
-    return null;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isConnectedToSolflare]);
 
@@ -41,9 +40,10 @@ const SolflareWalletProvider = ({ children }) => {
   }, []);
 
   const solFlarePublicKey = useMemo(() => {
-    if (solflareProvider) return solflareProvider.publicKey;
+    if (solflareProvider && isConnectedToSolflare)
+      return solflareProvider.publicKey;
     return null;
-  }, [solflareProvider]);
+  }, [solflareProvider, isConnectedToSolflare]);
 
   const connectToSolflare = useCallback(() => {
     if (solflareProvider) {
