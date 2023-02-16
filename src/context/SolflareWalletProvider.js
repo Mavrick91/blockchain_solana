@@ -11,16 +11,17 @@ import {
 
 const WalletContext = createContext();
 
-const WalletProvider = ({ children }) => {
+const SolflareWalletProvider = ({ children }) => {
   const [isConnectedToSolflare, setIsConnectedToSolflare] = useState(false);
 
   const solflareProvider = useMemo(() => {
-    const isSolflareInstalled = window.solflare && window.solflare.isSolflare;
+    if (typeof window !== "undefined") {
+      const isSolflareInstalled = window.solflare && window.solflare.isSolflare;
 
-    if (isSolflareInstalled) {
-      return window.solflare;
+      if (isSolflareInstalled) {
+        return window.solflare;
+      }
     }
-
     return null;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isConnectedToSolflare]);
@@ -39,10 +40,10 @@ const WalletProvider = ({ children }) => {
     }
   }, []);
 
-  const solFlarePublicKey = useMemo(
-    () => solflareProvider.publicKey,
-    [solflareProvider.publicKey]
-  );
+  const solFlarePublicKey = useMemo(() => {
+    if (solflareProvider) return solflareProvider.publicKey;
+    return null;
+  }, [solflareProvider]);
 
   const connectToSolflare = useCallback(() => {
     if (solflareProvider) {
@@ -71,14 +72,16 @@ const WalletProvider = ({ children }) => {
   );
 };
 
-export const useWallet = () => {
+export const useSolflareWallet = () => {
   const context = useContext(WalletContext);
 
   if (!context) {
-    throw new Error("useWallet must be used within a WalletProvider");
+    throw new Error(
+      "useSolflareWallet must be used within a SolflareWalletProvider"
+    );
   }
 
   return context;
 };
 
-export default WalletProvider;
+export default SolflareWalletProvider;
