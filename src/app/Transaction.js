@@ -7,7 +7,7 @@ import { useCallback, useState } from "react";
 import Button from "../components/Button";
 import Select from "../components/Input/Select";
 import Text from "../components/Input/Text";
-import Notification from "../components/Notification";
+import { useNotification } from "../context/NotificationProvider";
 import { useWallet } from "../context/SolanaWalletProvider";
 import connection from "../web3";
 
@@ -22,7 +22,7 @@ const Transaction = () => {
    * State to control the visibility of the Notification component
    * and the loading state of the submitTransaction function
    */
-  const [showNotification, setShowNotification] = useState(false);
+  const { setShowNotification } = useNotification();
   const [isTransactionLoading, setIsTransactionLoading] = useState(false);
 
   /*
@@ -79,7 +79,13 @@ const Transaction = () => {
     } finally {
       setIsTransactionLoading(false);
     }
-  }, [amount, recipientPublicKey, senderPublicKey, solflareProvider]);
+  }, [
+    amount,
+    recipientPublicKey,
+    senderPublicKey,
+    setShowNotification,
+    solflareProvider,
+  ]);
 
   return (
     <div>
@@ -109,7 +115,6 @@ const Transaction = () => {
           Send
         </Button>
       </div>
-      <Notification setShow={setShowNotification} show={showNotification} />
     </div>
   );
 };

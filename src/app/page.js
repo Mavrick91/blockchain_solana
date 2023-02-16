@@ -1,6 +1,7 @@
 "use client";
 
 import BackgroundDecoration from "../components/BackgroundDecoration";
+import { useNotification } from "../context/NotificationProvider";
 import { useWallet } from "../context/SolanaWalletProvider";
 import Header from "./Header";
 import Transaction from "./Transaction";
