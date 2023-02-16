@@ -7,12 +7,14 @@ import { useCallback, useState } from "react";
 import Button from "../components/Button";
 import Select from "../components/Input/Select";
 import Text from "../components/Input/Text";
+import Notification from "../components/Notification";
 import { useWallet } from "../context/SolanaWalletProvider";
 import connection from "../web3";
 
 const Transaction = () => {
   const { solflareProvider, solFlarePublicKey } = useWallet();
 
+  const [showNotif, setShowNotif] = useState(false);
   const [isTransactionLoading, setIsTransactionLoading] = useState(false);
   const [senderPublicKey, setSenderPublicKey] = useState(
     solFlarePublicKey.toString()
@@ -51,6 +53,7 @@ const Transaction = () => {
 
       await connection.confirmTransaction(txid);
       setAmount("0");
+      setShowNotif(true);
     } catch (error) {
       console.log("🚀 ~ error", error);
     } finally {
@@ -92,6 +95,7 @@ const Transaction = () => {
           Send
         </Button>
       </div>
+      <Notification setShow={setShowNotif} show={showNotif} />
     </div>
   );
 };
