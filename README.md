@@ -14,9 +14,7 @@
 
 ## Download the Soflare extension
 
-1. Go to the [Chrome Web Store](https://chrome.google.com/webstore)
-2. Search for `Solflare`
-3. Download and install the Solflare extension
+1. Download and install the Solflare extension [Chrome Solflare extension](https://chrome.google.com/webstore/detail/solflare-wallet/bhhhlbepdkbapadjdnnojkbgioiodbic)
 
 ## Connect the extension to your Solflare wallet
 
@@ -39,7 +37,7 @@
 
 ## Starting the Next.js Application
 
-1. Intall the dependencies
+1. Install the dependencies
 
 ```
 npm install
