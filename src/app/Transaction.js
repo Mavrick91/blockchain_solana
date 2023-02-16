@@ -12,66 +12,80 @@ import { useWallet } from "../context/SolanaWalletProvider";
 import connection from "../web3";
 
 const Transaction = () => {
+  /*
+   * useWallet hook from SolanaWalletProvider context
+   * provides access to the Solflare provider and Solflare public key
+   */
   const { solflareProvider, solFlarePublicKey } = useWallet();
 
-  const [showNotif, setShowNotif] = useState(false);
+  /*
+   * State to control the visibility of the Notification component
+   * and the loading state of the submitTransaction function
+   */
+  const [showNotification, setShowNotification] = useState(false);
   const [isTransactionLoading, setIsTransactionLoading] = useState(false);
-  const [senderPublicKey, setSenderPublicKey] = useState(
-    solFlarePublicKey.toString()
-  );
+
+  /*
+   * State to store the sender and recipient public keys, as well as the transaction amount
+   */
+  const [senderPublicKey, setSenderPublicKey] = useState(solFlarePublicKey);
   const [recipientPublicKey, setRecipientPublicKey] = useState(
     solFlarePublicKey.toString()
   );
   const [amount, setAmount] = useState("0");
 
-  const defaultItems = [
+  /*
+   * Data for the Select component, containing the available public keys
+   */
+  const accountPublicKey = [
     {
       label: solFlarePublicKey.toString(),
-      value: solFlarePublicKey.toString(),
+      value: solFlarePublicKey,
       id: 0,
     },
   ];
 
+  /*
+   * Callback function to submit a transaction
+   * - creates a new TransactionWeb3 object and adds a transfer instruction to it
+   * - signs the transaction with the Solflare provider
+   * - sends the signed transaction to the Solana network via the Solana connection
+   * - confirms the transaction was processed and updates the component state to display a notification
+   */
   const submitTransaction = useCallback(async () => {
     try {
       setIsTransactionLoading(true);
-      console.log(isTransactionLoading);
+
       let transaction = new TransactionWeb3().add(
         SystemProgram.transfer({
-          fromPubkey: solFlarePublicKey,
-          toPubkey: senderPublicKey,
+          fromPubkey: senderPublicKey,
+          toPubkey: recipientPublicKey,
           lamports: parseInt(amount),
         })
       );
 
       let { blockhash } = await connection.getRecentBlockhash();
       transaction.recentBlockhash = blockhash;
-      transaction.feePayer = solFlarePublicKey;
+      transaction.feePayer = senderPublicKey;
 
       let signed = await solflareProvider.signTransaction(transaction);
       let txid = await connection.sendRawTransaction(signed.serialize());
 
       await connection.confirmTransaction(txid);
       setAmount("0");
-      setShowNotif(true);
+      setShowNotification(true);
     } catch (error) {
       console.log("🚀 ~ error", error);
     } finally {
       setIsTransactionLoading(false);
     }
-  }, [
-    amount,
-    isTransactionLoading,
-    senderPublicKey,
-    solFlarePublicKey,
-    solflareProvider,
-  ]);
+  }, [amount, recipientPublicKey, senderPublicKey, solflareProvider]);
 
   return (
     <div>
       <div className="space-y-4">
         <Select
-          items={defaultItems}
+          items={accountPublicKey}
           label="From account"
           onChange={setSenderPublicKey}
         />
@@ -95,7 +109,7 @@ const Transaction = () => {
           Send
         </Button>
       </div>
-      <Notification setShow={setShowNotif} show={showNotif} />
+      <Notification setShow={setShowNotification} show={showNotification} />
     </div>
   );
 };
