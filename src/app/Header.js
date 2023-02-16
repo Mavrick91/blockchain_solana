@@ -1,11 +1,11 @@
 "use client";
 
 import Button from "../components/Button/Button";
-import { useWallet } from "../context/SolanaWalletProvider";
+import { useSolflareWallet } from "../context/SolflareWalletProvider";
 
 const Header = () => {
   const { connectToSolflare, isConnectedToSolflare, disconnectToSolflare } =
-    useWallet();
+    useSolflareWallet();
 
   return (
     <header className="pt-6 px-8">

@@ -8,15 +8,15 @@ import Button from "../components/Button";
 import Select from "../components/Input/Select";
 import Text from "../components/Input/Text";
 import { useNotification } from "../context/NotificationProvider";
-import { useWallet } from "../context/SolanaWalletProvider";
+import { useSolflareWallet } from "../context/SolflareWalletProvider";
 import connection from "../web3";
 
 const Transaction = () => {
   /*
-   * useWallet hook from SolanaWalletProvider context
+   * useSolflareWallet hook from SolanaWalletProvider context
    * provides access to the Solflare provider and Solflare public key
    */
-  const { solflareProvider, solFlarePublicKey } = useWallet();
+  const { solflareProvider, solFlarePublicKey } = useSolflareWallet();
 
   /*
    * State to control the visibility of the Notification component

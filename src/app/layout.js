@@ -5,7 +5,7 @@ import "./globals.css";
 import React from "react";
 
 import NotificationProvider from "../context/NotificationProvider";
-import SolanaWalletProvider from "../context/SolanaWalletProvider";
+import SolanaWalletProvider from "../context/SolflareWalletProvider";
 
 const RootLayout = ({ children }) => (
   <html lang="en">

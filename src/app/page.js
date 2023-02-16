@@ -1,12 +1,12 @@
 "use client";
 
 import BackgroundDecoration from "../components/BackgroundDecoration";
-import { useWallet } from "../context/SolanaWalletProvider";
+import { useSolflareWallet } from "../context/SolflareWalletProvider";
 import Header from "./Header";
 import Transaction from "./Transaction";
 
 const Home = () => {
-  const { isConnectedToSolflare } = useWallet();
+  const { isConnectedToSolflare } = useSolflareWallet();
 
   return (
     <div className="isolate bg-gray-900 flex-grow">
